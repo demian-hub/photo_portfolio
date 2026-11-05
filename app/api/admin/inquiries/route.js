@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { database } from '../../../../lib/db.mjs';
 import { json, readJson, sameOrigin, sessionUser } from '../../../../lib/security.mjs';
 import { statuses } from '../../../../lib/validation.mjs';
+import { mailConfiguration } from '../../../../lib/mail.mjs';
 export const runtime = 'nodejs';
 async function authorized() { return sessionUser((await cookies()).get('still_session')?.value); }
 export async function GET(request) {
@@ -16,9 +17,11 @@ export async function GET(request) {
   const where = conditions.length ? ` WHERE ${conditions.join(' AND ')}` : '';
   const db = database();
   const total = db.prepare(`SELECT count(*) AS count FROM inquiries${where}`).get(...values).count;
-  const inquiries = db.prepare(`SELECT * FROM inquiries${where} ORDER BY created_at DESC, id DESC LIMIT 20 OFFSET ?`).all(...values, (page - 1) * 20);
+  const inquiries = db.prepare(`SELECT *, (SELECT status FROM inquiry_notifications WHERE inquiry_id=inquiries.id) AS notification_status,
+    (SELECT error_code FROM inquiry_notifications WHERE inquiry_id=inquiries.id) AS notification_error
+    FROM inquiries${where} ORDER BY created_at DESC, id DESC LIMIT 20 OFFSET ?`).all(...values, (page - 1) * 20);
   const counts = db.prepare('SELECT status, count(*) AS count FROM inquiries GROUP BY status').all();
-  return json({ inquiries, total, counts, page });
+  return json({ inquiries, total, counts, page, mailConfigured: mailConfiguration().configured });
 }
 export async function PATCH(request) {
   if (!sameOrigin(request)) return json({ message: '허용되지 않은 요청입니다.' }, 403);

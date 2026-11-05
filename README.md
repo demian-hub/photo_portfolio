@@ -1,8 +1,24 @@
-# Still photography
+# 데미안포토
 
 Next.js + React + SQLite로 구현한 개인 PC 운영용 포토그래퍼 포트폴리오입니다. 요구사항은 `agents.md`, 시각 방향은 `DESIGN.md`를 참고하세요.
 
 ## 로컬 실행
+
+프로젝트 폴더에서 다음 파일을 더블클릭하면 됩니다.
+
+- `홈페이지 시작.cmd`: 서버를 백그라운드에서 실행하고 기본 브라우저로 홈페이지를 엽니다. 처음 실행할 때 빌드가 없으면 자동으로 빌드합니다.
+- `홈페이지 종료.cmd`: 이 시작 파일로 실행한 프로젝트 서버만 종료합니다.
+
+시작 창을 닫아도 서버는 계속 실행됩니다. 이미 실행 중이면 서버를 추가로 띄우지 않습니다. 다른 프로그램이 4173번 포트를 사용 중이면 해당 프로그램을 종료하지 않고 안내합니다. `npm.cmd run start` 등으로 수동 실행한 서버는 해당 콘솔에서 직접 종료해야 합니다.
+
+서버 식별 정보와 로그는 Git에서 제외된 `.local/`에 저장합니다. 종료 전에 프로세스 ID, 시작 시각, 실행 파일과 프로젝트 경로를 확인합니다. 소스를 수정한 경우 서버를 종료하고 `npm.cmd run build`로 새로 빌드한 후 시작하세요.
+
+PowerShell에서 실행하려면 아래 명령을 사용할 수 있습니다. `-NoBrowser`는 브라우저를 열지 않는 옵션입니다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\manage-site.ps1 -Action Start -NoBrowser
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\manage-site.ps1 -Action Stop
+```
 
 Node.js 24 이상을 사용합니다. SQLite는 Node.js 내장 `node:sqlite`를 사용하므로 별도 DB 서버가 필요 없습니다.
 
@@ -38,7 +54,7 @@ npm.cmd run start
 - 제목·촬영분야·이미지 설명·크롭 위치: `lib/content.js`
 - 히어로·작가 소개·푸터: `app/page.js`
 - 모든 샘플 사진 출처: `public/images/sources.json`
-- Still은 임시 스튜디오명입니다. 작가명, 활동 지역, 연락처, SNS를 실제 정보로 교체하세요.
+- 작가명은 데미안포토입니다. 활동 지역, 연락처, SNS는 실제 정보로 교체하세요. 작가 소개 사진은 제공된 사진을 흑백 세로 포트레이트로 편집한 public/images/demian-portrait-bw.png입니다.
 - 샘플 표시 문구는 실제 작업물로 모두 교체한 뒤 제거하세요.
 - 개인정보 안내는 초안입니다. 실제 공개 전에 운영자·수집 목적·보관 기간을 확정하고 `app/privacy/page.js`, `components/InquiryForm.js`, 접수 동의 버전을 함께 갱신하세요. 자동 삭제 기능은 포함되지 않습니다.
 
@@ -69,7 +85,27 @@ SQLite 온라인 백업 API로 일관된 DB 스냅샷과 이미지 사본을 `ba
 
 로그인 후 자동 실행용 예시는 `scripts/start-site.ps1`에 있습니다. Windows 작업 스케줄러에서 해당 스크립트를 실행하도록 연결할 수 있습니다. OS 자동 실행·절전·방화벽 설정은 현재 변경하지 않았습니다.
 
-도메인 기반 프록시를 사용하는 경우 `ops/Caddyfile.example`을 참고할 수 있습니다. Caddy 설치·실행은 자동으로 수행하지 않습니다. 공개 후 문의 알림은 제공되지 않으므로 관리자가 직접 접속해 확인합니다.
+도메인 기반 프록시를 사용하는 경우 `ops/Caddyfile.example`을 참고할 수 있습니다. Caddy 설치·실행은 자동으로 수행하지 않습니다.
+
+## 촬영문의 이메일 알림
+
+새 문의 저장 후 `parkhanchul@gmail.com`으로 접수번호, 고객 이름·연락처, 촬영 분야·요구사항, 예산·희망일·지역, 관리자 링크를 전송합니다. 수신 주소는 서버에 고정되어 있으며 방문자가 변경할 수 없습니다. 이름과 연락처는 메일 본문에만 넣고 제목은 접수번호만 사용합니다.
+
+최초 한 번 프로젝트 루트의 **메일 알림 설정.cmd**를 더블클릭하세요. 발신 계정은 parkhanchul@gmail.com으로 자동 설정되며 이메일 주소 입력 단계는 없습니다. Google 앱 이름은 demianphoto_home으로 지정하면 됩니다. Google 계정에서 만든 **16자리 앱 비밀번호**를 PC의 숨김 입력란에 입력합니다. 일반 Google 비밀번호를 입력하거나 채팅에 비밀번호를 보내지 마세요. 앱 비밀번호 사용에는 2단계 인증이 필요하며 계정 유형에 따라 제공되지 않을 수 있습니다. [Google 공식 안내](https://support.google.com/accounts/answer/185833?hl=ko)
+
+설정 파일은 기존 환경변수를 유지하면서 `.env.local`에 SMTP 항목만 기록합니다. 이 파일은 Git에서 제외됩니다. 스크립트는 인증 확인과 테스트 메일을 발송하고, 프로젝트 실행 파일로 켜둔 서버를 재시작하여 설정을 적용하며, 대기 중인 알림을 최대 50건 재시도합니다. 서버를 수동 실행했다면 직접 재시작하세요. 실패한 알림은 관리자 상세 화면에서 다시 보낼 수 있습니다.
+
+```powershell
+npm.cmd run mail:check  # 연결 및 인증 확인 (메일 발송 없음)
+npm.cmd run mail:test   # 설정 확인용 테스트 메일 발송
+npm.cmd run mail:retry  # 미발송 알림 최대 50건 재시도
+```
+
+다른 SMTP 서비스는 `.env.example`의 SMTP_HOST, SMTP_PORT(465 또는 587), SMTP_USER, SMTP_PASS를 `.env.local`에 설정합니다. TLS를 사용하며 인증서 검증은 끄지 않습니다.
+
+문의와 발송 대기 기록은 하나의 SQLite 트랜잭션으로 저장하고, 접수 응답 이후 메일을 발송합니다. 인증 누락이나 SMTP 오류가 발생해도 문의는 유지됩니다. 발송 상태는 관리자 상세에서 확인합니다. ‘메일 서버 수락’은 SMTP 서버가 수신을 수락했다는 의미이며 받은편지함 도착을 보장하지 않습니다. 스팸함도 확인하세요.
+
+발송 중 서버가 강제 종료된 경우 마지막 시도 후 2분이 지나면 재시도할 수 있습니다. 예약된 자동 재시도 작업은 없으며 관리자 버튼 또는 mail:retry를 사용합니다. SMTP 수락 직후 서버가 중단되는 극단적인 경우 재시도 시 중복 메일이 올 수 있습니다. 기능 추가 전 접수 건은 자동 발송 대상이 아닙니다.
 
 ## 검증
 

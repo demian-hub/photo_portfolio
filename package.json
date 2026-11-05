@@ -8,12 +8,16 @@
     "start": "next start --hostname 127.0.0.1 --port 4173",
     "setup:admin": "node scripts/setup-admin.mjs",
     "backup": "node scripts/backup.mjs",
+    "mail:check": "node scripts/check-mail.mjs",
+    "mail:test": "node scripts/check-mail.mjs --send-test",
+    "mail:retry": "node scripts/retry-mail.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-kr": "^5.3.1",
     "@fontsource/cormorant-garamond": "^5.3.0",
     "next": "^16.4.5",
+    "nodemailer": "^10.3.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   }

@@ -30,7 +30,7 @@ test('HTTP 통합: 문의 저장 → 인증 → 조회·검색 → 상태 변경
   database().prepare('INSERT INTO admins VALUES (?,?)').run('test-admin', hashPassword('only-for-test-1234'));
   const port = 4289;
   const origin = `http://127.0.0.1:${port}`;
-  const server = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', String(port)], { env: { ...process.env, SITE_URL: origin }, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+  const server = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', String(port)], { env: { ...process.env, SITE_URL: origin, SMTP_USER: '', SMTP_PASS: '', COOKIE_SECURE: 'false' }, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
   let output = '';
   server.stdout.on('data', chunk => output += chunk);
   server.stderr.on('data', chunk => output += chunk);
@@ -47,12 +47,14 @@ test('HTTP 통합: 문의 저장 → 인증 → 조회·검색 → 상태 변경
     }
     assert.match(output, /Ready in/);
     assert.equal((await request('/api/admin/inquiries')).status, 401);
+    assert.equal((await request('/api/admin/notifications', 'POST', { id: 1 })).status, 401);
     assert.equal((await request('/api/inquiries', 'POST', valid, { Origin: 'https://attacker.example' })).status, 403);
     assert.equal((await request('/api/inquiries', 'POST', { ...valid, consent: false })).status, 400);
     const created = await request('/api/inquiries', 'POST', valid);
     assert.equal(created.status, 201);
     assert.ok(created.data.id);
     assert.equal(database().prepare('SELECT name FROM inquiries WHERE id=?').get(created.data.id).name, valid.name);
+    assert.ok(database().prepare('SELECT inquiry_id FROM inquiry_notifications WHERE inquiry_id=?').get(created.data.id));
     assert.equal((await request('/api/admin/inquiries', 'PATCH', { id: created.data.id, status: '완료' })).status, 401);
     assert.equal((await request('/api/admin/login', 'POST', { username: 'test-admin', password: 'incorrect' })).status, 401);
     const login = await request('/api/admin/login', 'POST', { username: 'test-admin', password: 'only-for-test-1234' });
@@ -60,6 +62,8 @@ test('HTTP 통합: 문의 저장 → 인증 → 조회·검색 → 상태 변경
     const setCookie = login.headers.get('set-cookie');
     assert.match(setCookie, /HttpOnly/i); assert.match(setCookie, /SameSite=strict/i);
     cookie = setCookie.split(';')[0];
+    assert.equal((await request('/api/admin/inquiries')).data.mailConfigured, false);
+    assert.equal((await request('/api/admin/notifications', 'POST', { id: created.data.id })).status, 503);
     assert.equal((await request('/api/admin/inquiries')).data.total, 1);
     assert.equal((await request('/api/admin/inquiries?q=notfound')).data.total, 0);
     assert.equal((await request('/api/admin/inquiries?q=' + encodeURIComponent(valid.name))).data.total, 1);

@@ -47,7 +47,7 @@ export default function InquiryForm() {
       {field('requirements', '촬영 요구사항', p => <textarea {...p} required rows={4} minLength={10} maxLength={5000} placeholder="촬영 목적, 인원, 원하는 분위기 등을 자유롭게 적어주세요. (10자 이상)" />)}
     </div>
     <div className="honeypot" aria-hidden="true"><label>웹사이트<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
-    <details className="privacy-details"><summary>개인정보 수집·이용 안내 보기</summary><p>수집 항목: 이름, 연락처, 촬영 요구사항 및 선택 입력 항목. 이용 목적: 촬영 상담과 문의 응대. 보관 기준 초안: 상담 종료 후 1년 이내 삭제. 동의를 거부할 수 있으며, 거부 시 폼 접수가 어렵습니다.</p><p>현재는 제작 확인용 사이트입니다. 실제 공개 전 운영자 정보와 보관 기간을 확정해야 합니다.</p></details>
+    <details className="privacy-details"><summary>개인정보 수집·이용 안내 보기</summary><p>수집 항목: 이름, 연락처, 촬영 요구사항 및 선택 입력 항목. 이용 목적: 촬영 상담, 문의 응대 및 작가에게 접수 이메일 알림. 보관 기준 초안: 상담 종료 후 1년 이내 삭제. 동의를 거부할 수 있으며, 거부 시 폼 접수가 어렵습니다.</p><p>현재는 제작 확인용 사이트입니다. 실제 공개 전 운영자 정보와 보관 기간을 확정해야 합니다.</p></details>
     <label className="consent"><input type="checkbox" name="consent" id="consent" required aria-invalid={!!errors.consent} aria-describedby={errors.consent ? 'consent-error' : undefined} /><span>개인정보 수집·이용에 동의합니다. (필수)</span></label>
     {errors.consent && <p className="field-error" id="consent-error">{errors.consent}</p>}
     {message && <p className="field-error" role="alert">{message}</p>}
