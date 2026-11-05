@@ -1,0 +1,57 @@
+[
+  {
+    "file": "hero.jpg",
+    "source": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1800&q=85",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "portrait-1.jpg",
+    "source": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "portrait-2.jpg",
+    "source": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "fashion-1.jpg",
+    "source": "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "fashion-2.jpg",
+    "source": "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "product-1.jpg",
+    "source": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "product-2.jpg",
+    "source": "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "corporate-1.jpg",
+    "source": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "corporate-2.jpg",
+    "source": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "event-1.jpg",
+    "source": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  },
+  {
+    "file": "event-2.jpg",
+    "source": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=82",
+    "usage": "Illustrative stock placeholder; replace before publication."
+  }
+]

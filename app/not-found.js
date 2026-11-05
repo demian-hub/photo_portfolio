@@ -1,0 +1,1 @@
+export default function NotFound() { return <main id="main" className="legal-page"><p className="display-title">Lost in the moment.</p><h1>페이지를 찾을 수 없습니다.</h1><p>주소를 확인하거나 포트폴리오 홈으로 돌아가주세요.</p><a className="button dark" href="/">홈으로 돌아가기</a></main>; }
